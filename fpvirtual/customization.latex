@@ -1,0 +1,22 @@
+% FPVirtual customization
+% Brand colors extracted from docs/Plantilla_genérica_con_portada.dotx
+% Corporate orange F3970D, body text dark gray 434343, Calibri (Carlito)
+\definecolor{fpv-orange}{HTML}{F3970D}
+\definecolor{fpv-darkorange}{HTML}{C77800}
+\definecolor{fpv-darkgray}{HTML}{434343}
+% Font: Calibri look-alike. The build replaces Eisvogel's Source Sans with
+% Helvetica (helvet) for pdflatex; with xelatex/lualatex set
+% mainfont: Carlito in the document YAML instead.
+\addtokomafont{section}{\color{fpv-orange}}
+\addtokomafont{subsection}{\color{fpv-darkgray}}
+\addtokomafont{subsubsection}{\color{fpv-darkgray}}
+\addtokomafont{paragraph}{\color{fpv-darkgray}}
+\addtokomafont{pageheadfoot}{\color{fpv-darkgray}}
+\color{fpv-darkgray}
+% Scale images that are wider than the text block down to \linewidth,
+% preserving aspect ratio (images smaller than \linewidth stay at native size)
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
