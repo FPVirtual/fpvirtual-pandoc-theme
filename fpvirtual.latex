@@ -101,7 +101,7 @@ $endif$
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $else$
-\usepackage[margin=2.5cm,includehead=true,includefoot=true,centering,$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
+\usepackage[top=1.9cm,bottom=1.25cm,left=2.5cm,right=2.5cm,includehead=true,includefoot=true,$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
 \usepackage{amsmath,amssymb}
 $if(cancel)$
@@ -625,12 +625,10 @@ $endif$
 $if(titlepage)$
 \usepackage{pagecolor}
 \usepackage{afterpage}
-$if(titlepage-background)$
 \usepackage{tikz}
-$endif$
 $if(geometry)$
 $else$
-\usepackage[margin=2.5cm,includehead=true,includefoot=true,centering]{geometry}
+\usepackage[top=1.9cm,bottom=1.25cm,left=2.5cm,right=2.5cm,includehead=true,includefoot=true]{geometry}
 $endif$
 $endif$
 
@@ -907,6 +905,7 @@ $endif$
 \definecolor{fpv-orange}{HTML}{F3970D}
 \definecolor{fpv-darkorange}{HTML}{C77800}
 \definecolor{fpv-darkgray}{HTML}{434343}
+\definecolor{fpv-midgray}{HTML}{808080}
 % Font: Calibri look-alike. The build replaces Eisvogel's Source Sans with
 % Helvetica (helvet) for pdflatex; with xelatex/lualatex set
 % mainfont: Carlito in the document YAML instead.
@@ -915,7 +914,21 @@ $endif$
 \addtokomafont{subsubsection}{\color{fpv-darkgray}}
 \addtokomafont{paragraph}{\color{fpv-darkgray}}
 \addtokomafont{pageheadfoot}{\color{fpv-darkgray}}
+% Softer header/footer separation lines
+\setkomafont{headsepline}{\color{fpv-midgray}}
+\setkomafont{footsepline}{\color{fpv-midgray}}
 \color{fpv-darkgray}
+% Table of contents — replicates the dotx: level 1 entries orange
+% (sectionentrypagenumber keeps page numbers dark gray), deeper levels
+% dark gray. Sub-level TOC entries use the cloned tocline styles, whose
+% entry format is patched directly (KOMA only provides font elements for
+% part/chapter/section entries).
+\addtokomafont{sectionentry}{\color{fpv-orange}\bfseries}
+\setkomafont{sectionentrypagenumber}{\color{fpv-darkgray}\mdseries}
+\makeatletter
+\expandafter\def\csname scr@tso@subsection@entryformat\endcsname{\color{fpv-darkgray}}
+\expandafter\def\csname scr@tso@default@entryformat\endcsname{\color{fpv-darkgray}}
+\makeatother
 % Scale images that are wider than the text block down to \linewidth,
 % preserving aspect ratio (images smaller than \linewidth stay at native size)
 \makeatletter
@@ -925,70 +938,41 @@ $endif$
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
 $if(titlepage)$
+%
+% FPVirtual cover page — replicates docs/Plantilla_genérica_con_portada.dotx:
+% white page, thin orange line on the left, outline logo, dark gray
+% uppercase title and orange subtitle. Positions measured from the dotx.
+%
+% Must be issued at top level: the background package's \NoBgThispage
+% does a local \let that would be undone by the titlepage group.
+\NoBgThispage
 \begin{titlepage}
-$if(titlepage-background)$
-\newgeometry{top=2cm, right=4cm, bottom=3cm, left=4cm}
-$else$
-\newgeometry{left=6cm}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  % Left line + dot: same as the interior pages (portada-fondo.png)
+  \draw[fpv-orange, line width=3pt] ([xshift=10.67mm]current page.north west) -- ([xshift=10.67mm]current page.south west);
+  \fill[fpv-orange] ([xshift=10.67mm, yshift=-58.92mm]current page.north west) circle (1.65mm);
+  \node[anchor=north west] at ([xshift=72.8mm, yshift=-65.2mm]current page.north west)
+    {\includegraphics[width=40.6mm]{$if(titlepage-logo)$$titlepage-logo$$else$fpvirtual/logo-cdfp.png$endif$}};
+  \node[anchor=north west, align=left, text=fpv-darkgray,
+        font=\fontsize{40}{46}\selectfont\bfseries\sffamily]
+    at ([xshift=53mm, yshift=-135mm]current page.north west)
+    {\MakeUppercase{$title$}};
+$if(subtitle)$
+  \node[anchor=north west, align=left, text=fpv-orange, text width=130mm,
+        font=\fontsize{22}{27}\selectfont\sffamily]
+    at ([xshift=53mm, yshift=-173mm]current page.north west)
+    {$subtitle$};
 $endif$
-$if(titlepage-color)$
-\definecolor{titlepage-color}{HTML}{$titlepage-color$}
-\newpagecolor{titlepage-color}\afterpage{\restorepagecolor}
+$if(author)$
+  \node[anchor=north west, align=left, text=fpv-darkgray, text width=130mm,
+        font=\fontsize{14}{18}\selectfont\sffamily]
+    at ([xshift=53mm, yshift=-203mm]current page.north west)
+    {$for(author)$$author$$sep$, $endfor$};
 $endif$
-$if(titlepage-background)$
-\tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{$titlepage-background$}};
-$endif$
-\newcommand{\colorRule}[3][black]{\textcolor[HTML]{#1}{\rule{#2}{#3}}}
-\begin{flushleft}
-\noindent
-\\[-1em]
-\color[HTML]{$if(titlepage-text-color)$$titlepage-text-color$$else$5F5F5F$endif$}
-\makebox[0pt][l]{\colorRule[$if(titlepage-rule-color)$$titlepage-rule-color$$else$435488$endif$]{1.3\textwidth}{$if(titlepage-rule-height)$$titlepage-rule-height$$else$4$endif$pt}}
-\par
-\noindent
-
-$if(titlepage-background)$
-% The titlepage with a background image has other text spacing and text size
-{
-  \setstretch{2}
-  \vfill
-  \vskip -8em
-  \noindent {\huge \textbf{\textsf{$title$}}}
-  $if(subtitle)$
-  \vskip 1em
-  {\Large \textsf{$subtitle$}}
-  $endif$
-  \vskip 2em
-  \noindent {\Large \textsf{$for(author)$$author$$sep$, $endfor$} \vskip 0.6em \textsf{$date$}}
-  \vfill
-}
-$else$
-{
-  \setstretch{1.4}
-  \vfill
-  \noindent {\huge \textbf{\textsf{$title$}}}
-  $if(subtitle)$
-  \vskip 1em
-  {\Large \textsf{$subtitle$}}
-  $endif$
-  \vskip 2em
-  \noindent {\Large \textsf{$for(author)$$author$$sep$, $endfor$}}
-  \vfill
-}
-$endif$
-
-$if(titlepage-logo)$
-\noindent
-\includegraphics[width=$if(logo-width)$$logo-width$$else$35mm$endif$, left]{$titlepage-logo$}
-$endif$
-
-$if(titlepage-background)$
-$else$
-\textsf{$date$}
-$endif$
-\end{flushleft}
+\end{tikzpicture}
+\null
 \end{titlepage}
-\restoregeometry
 \pagenumbering{arabic}
 $endif$
 
@@ -1003,6 +987,15 @@ $if(abstract)$
 $abstract$
 \end{abstract}
 $endif$
+$if(license)$
+\begin{center}
+{\small\sffamily\color{fpv-darkgray}$license$}
+\end{center}
+$else$
+\begin{center}
+{\small\sffamily\color{fpv-darkgray}Este documento se distribuye bajo licencia Creative Commons Atribución 3.0 (CC BY 3.0)}
+\end{center}
+$endif$
 $endif$
 
 $if(first-chapter)$
@@ -1015,6 +1008,7 @@ $include-before$
 
 $endfor$
 $if(toc)$
+\newpage
 $if(toc-title)$
 \renewcommand*\contentsname{$toc-title$}
 $endif$

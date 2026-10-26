@@ -1,0 +1,38 @@
+$if(titlepage)$
+%
+% FPVirtual cover page — replicates docs/Plantilla_genérica_con_portada.dotx:
+% white page, thin orange line on the left, outline logo, dark gray
+% uppercase title and orange subtitle. Positions measured from the dotx.
+%
+% Must be issued at top level: the background package's \NoBgThispage
+% does a local \let that would be undone by the titlepage group.
+\NoBgThispage
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  % Left line + dot: same as the interior pages (portada-fondo.png)
+  \draw[fpv-orange, line width=3pt] ([xshift=10.67mm]current page.north west) -- ([xshift=10.67mm]current page.south west);
+  \fill[fpv-orange] ([xshift=10.67mm, yshift=-58.92mm]current page.north west) circle (1.65mm);
+  \node[anchor=north west] at ([xshift=72.8mm, yshift=-65.2mm]current page.north west)
+    {\includegraphics[width=40.6mm]{$if(titlepage-logo)$$titlepage-logo$$else$fpvirtual/logo-cdfp.png$endif$}};
+  \node[anchor=north west, align=left, text=fpv-darkgray,
+        font=\fontsize{40}{46}\selectfont\bfseries\sffamily]
+    at ([xshift=53mm, yshift=-135mm]current page.north west)
+    {\MakeUppercase{$title$}};
+$if(subtitle)$
+  \node[anchor=north west, align=left, text=fpv-orange, text width=130mm,
+        font=\fontsize{22}{27}\selectfont\sffamily]
+    at ([xshift=53mm, yshift=-173mm]current page.north west)
+    {$subtitle$};
+$endif$
+$if(author)$
+  \node[anchor=north west, align=left, text=fpv-darkgray, text width=130mm,
+        font=\fontsize{14}{18}\selectfont\sffamily]
+    at ([xshift=53mm, yshift=-203mm]current page.north west)
+    {$for(author)$$author$$sep$, $endfor$};
+$endif$
+\end{tikzpicture}
+\null
+\end{titlepage}
+\pagenumbering{arabic}
+$endif$

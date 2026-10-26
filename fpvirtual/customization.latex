@@ -4,6 +4,7 @@
 \definecolor{fpv-orange}{HTML}{F3970D}
 \definecolor{fpv-darkorange}{HTML}{C77800}
 \definecolor{fpv-darkgray}{HTML}{434343}
+\definecolor{fpv-midgray}{HTML}{808080}
 % Font: Calibri look-alike. The build replaces Eisvogel's Source Sans with
 % Helvetica (helvet) for pdflatex; with xelatex/lualatex set
 % mainfont: Carlito in the document YAML instead.
@@ -12,7 +13,21 @@
 \addtokomafont{subsubsection}{\color{fpv-darkgray}}
 \addtokomafont{paragraph}{\color{fpv-darkgray}}
 \addtokomafont{pageheadfoot}{\color{fpv-darkgray}}
+% Softer header/footer separation lines
+\setkomafont{headsepline}{\color{fpv-midgray}}
+\setkomafont{footsepline}{\color{fpv-midgray}}
 \color{fpv-darkgray}
+% Table of contents — replicates the dotx: level 1 entries orange
+% (sectionentrypagenumber keeps page numbers dark gray), deeper levels
+% dark gray. Sub-level TOC entries use the cloned tocline styles, whose
+% entry format is patched directly (KOMA only provides font elements for
+% part/chapter/section entries).
+\addtokomafont{sectionentry}{\color{fpv-orange}\bfseries}
+\setkomafont{sectionentrypagenumber}{\color{fpv-darkgray}\mdseries}
+\makeatletter
+\expandafter\def\csname scr@tso@subsection@entryformat\endcsname{\color{fpv-darkgray}}
+\expandafter\def\csname scr@tso@default@entryformat\endcsname{\color{fpv-darkgray}}
+\makeatother
 % Scale images that are wider than the text block down to \linewidth,
 % preserving aspect ratio (images smaller than \linewidth stay at native size)
 \makeatletter

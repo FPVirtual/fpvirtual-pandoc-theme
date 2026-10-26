@@ -1,40 +1,75 @@
-# Guía de usuario — «Videotutoría» (Google Meet para Moodle)
-- [Guía de usuario — «Videotutoría» (Google Meet para Moodle)](#guía-de-usuario--videotutoría-google-meet-para-moodle)
-  - [1. Crear una videotutoría (profesorado)](#1-crear-una-videotutoría-profesorado)
-    - [1.1 Añadir la actividad](#11-añadir-la-actividad)
-    - [1.2 Conectar la cuenta de Google](#12-conectar-la-cuenta-de-google)
-    - [1.3 Sección «General»](#13-sección-general)
-    - [1.4 Configuración de visualización de grabaciones](#14-configuración-de-visualización-de-grabaciones)
-    - [1.5 Recurrencia: clases periódicas](#15-recurrencia-clases-periódicas)
-    - [1.6 URL de la sala](#16-url-de-la-sala)
-    - [1.7 Notificación a estudiantes](#17-notificación-a-estudiantes)
-    - [1.8 Adjuntos](#18-adjuntos)
-  - [2. La página de la actividad](#2-la-página-de-la-actividad)
-    - [Suscripción a avisos de nuevas grabaciones](#suscripción-a-avisos-de-nuevas-grabaciones)
-    - [Progreso de visionado](#progreso-de-visionado)
-  - [3. Grabar, sincronizar y gestionar las clases](#3-grabar-sincronizar-y-gestionar-las-clases)
-    - [3.1 Grabar en Google Meet](#31-grabar-en-google-meet)
-    - [3.2 Qué filtros utiliza el sistema al sincronizar](#32-qué-filtros-utiliza-el-sistema-al-sincronizar)
-      - [Ejemplo concreto](#ejemplo-concreto)
-    - [3.3 Sincronizar con Moodle](#33-sincronizar-con-moodle)
-    - [3.4 Qué puede hacer que una videotutoría no sincronice](#34-qué-puede-hacer-que-una-videotutoría-no-sincronice)
-      - [Cambiar el nombre de la sala después de sincronizar - SE RECOMIENDA NO HACER NUNCA -](#cambiar-el-nombre-de-la-sala-después-de-sincronizar---se-recomienda-no-hacer-nunca--)
-    - [3.5 Gestionar las grabaciones (profesorado)](#35-gestionar-las-grabaciones-profesorado)
-    - [3.6 Renombrar una grabación: ¿en Moodle o en Drive?](#36-renombrar-una-grabación-en-moodle-o-en-drive)
-    - [3.7 La papelera de grabaciones](#37-la-papelera-de-grabaciones)
-    - [3.8 Acceso a las grabaciones en Drive](#38-acceso-a-las-grabaciones-en-drive)
-  - [4. El hub de la lección (página de cada grabación)](#4-el-hub-de-la-lección-página-de-cada-grabación)
-  - [5. Análisis con IA (Gemini)](#5-análisis-con-ia-gemini)
-    - [Cómo generarlo](#cómo-generarlo)
-    - [Edición manual](#edición-manual)
-  - [6. Preguntas de práctica con IA](#6-preguntas-de-práctica-con-ia)
-  - [7. Materiales de la lección](#7-materiales-de-la-lección)
-  - [8. Resumen rápido por rol](#8-resumen-rápido-por-rol)
-  - [9. Solución de problemas](#9-solución-de-problemas)
+---
+title: "Guía de usuario"
+subtitle: "«Videotutoría» · Google Meet™ para Moodle"
+author: "FP Campus Digital"
+lang: es
+abstract: |
+  Esta guía explica cómo usar la actividad \textbf{Google Meet™ para Moodle}
+  (en la plataforma aparece como \textbf{«Videotutoría»}) tanto para el
+  profesorado como para el alumnado. La actividad permite crear salas de
+  Google Meet desde el curso, programar sesiones recurrentes, grabar las
+  clases y ponerlas a disposición del alumnado con resúmenes, transcripciones
+  y preguntas de práctica generadas con IA.
+toc-title: "Índice"
+toc-own-page: true
+titlepage: true
+titlepage-logo: "fpvirtual/logo-cdfp.png"
+page-background: "fpvirtual/portada-fondo.png"
+page-background-opacity: "1"
+colorlinks: true
+header-includes:
+- |
+  ```{=latex}
+  \usepackage[most]{tcolorbox}
 
+  % Colores corporativos (mismos valores que fpvirtual/customization.latex)
+  \definecolor{fpvbox-orange}{HTML}{F3970D}
+  \definecolor{fpvbox-darkorange}{HTML}{C77800}
+  \definecolor{fpvbox-red}{HTML}{A50000}
+  \definecolor{fpvbox-midgray}{HTML}{808080}
 
-Esta guía explica cómo usar la actividad **Google Meet™ para Moodle** (en la plataforma aparece como **«Videotutoría»**) tanto para el profesorado como para el alumnado. La actividad permite crear salas de Google Meet desde el curso, programar sesiones recurrentes, grabar las clases y ponerlas a disposición del alumnado con resúmenes, transcripciones y preguntas de práctica generadas con IA.
-
+  % resumen — caja del abstract (YAML), naranja corporativo
+  \tcolorboxenvironment{abstract}{
+    enhanced, breakable,
+    colback=fpvbox-orange!6!white, colframe=fpvbox-orange,
+    boxrule=0.5pt, arc=1.2mm,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    title=Resumen, colbacktitle=fpvbox-orange, coltitle=white,
+    fonttitle=\sffamily\bfseries\small, titlerule=0mm,
+  }
+  % nota — información complementaria
+  \newtcolorbox{nota}{
+    enhanced, breakable,
+    colback=fpvbox-midgray!7!white, colframe=fpvbox-midgray!40!white,
+    boxrule=0.5pt, arc=1.2mm,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    title=Nota, colbacktitle=fpvbox-midgray!40!white, coltitle=white,
+    fonttitle=\sffamily\bfseries\small, titlerule=0mm,
+  }
+  % aviso — precaución
+  \newtcolorbox{aviso}{
+    enhanced, breakable,
+    colback=fpvbox-darkorange!7!white, colframe=fpvbox-darkorange,
+    boxrule=0.5pt, arc=1.2mm,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    title=Aviso, colbacktitle=fpvbox-darkorange, coltitle=white,
+    fonttitle=\sffamily\bfseries\small, titlerule=0mm,
+  }
+  % importante — advertencia grave / irreversible
+  \newtcolorbox{importante}{
+    enhanced, breakable,
+    colback=fpvbox-red!5!white, colframe=fpvbox-red,
+    boxrule=0.5pt, arc=1.2mm,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    title=Importante, colbacktitle=fpvbox-red, coltitle=white,
+    fonttitle=\sffamily\bfseries\small, titlerule=0mm,
+  }
+  ```
+pandoc-latex-environment:
+  nota: [nota]
+  aviso: [aviso]
+  importante: [importante]
+---
 
 ## 1. Crear una videotutoría (profesorado)
 
@@ -44,7 +79,7 @@ Esta guía explica cómo usar la actividad **Google Meet™ para Moodle** (en la
 2. Pulsa **«Añadir una actividad o un recurso»**.
 3. Selecciona **«Google Meet™ para Moodle»** (puede estar marcada con una estrella como favorita) y pulsa *Añadir*.
 
-![Selector de actividades con «Google Meet™ para Moodle» resaltado](images/crear-recurso.png)
+![Selector de actividades con «Google Meet™ para Moodle» resaltado](images/crear-recurso.png){width=85%}
 
 ### 1.2 Conectar la cuenta de Google
 
@@ -52,7 +87,9 @@ En la parte superior del formulario verás un aviso azul. Para que la URL de la 
 
 ![Aviso para iniciar sesión con la cuenta de Google](images/inicio-sesion-google.png)
 
-> Si no inicias sesión, tendrás que pegar la URL de la sala manualmente en el apartado «URL de la sala».
+::: nota
+Si no inicias sesión, tendrás que pegar la URL de la sala manualmente en el apartado «URL de la sala».
+:::
 
 ### 1.3 Sección «General»
 
@@ -92,7 +129,9 @@ Si iniciaste sesión con Google, la URL se genera automáticamente al guardar y 
 
 ![URL de la sala generada automáticamente](images/url-sala-automatica-si-logeado.png)
 
-> **¡Atención!** Si cambias la URL de la sala o el correo del organizador después de haber sincronizado grabaciones, esas grabaciones pueden acabar movidas a la papelera en la siguiente sincronización (ver 3.4).
+::: aviso
+Si cambias la URL de la sala o el correo del organizador después de haber sincronizado grabaciones, esas grabaciones pueden acabar movidas a la papelera en la siguiente sincronización (ver 3.4).
+:::
 
 ### 1.7 Notificación a estudiantes
 
@@ -176,7 +215,9 @@ En el panel de sincronización verás el **organizador**, el nombre con el que s
 
 ![Panel de sincronización: organizador, nombre de las grabaciones y cuenta conectada](images/nombre-grabaciones-y-codigo-generado.png)
 
-> Si la cuenta de Google caduca o se revoca el acceso, vuelve a iniciar sesión desde el formulario de edición de la actividad.
+::: nota
+Si la cuenta de Google caduca o se revoca el acceso, vuelve a iniciar sesión desde el formulario de edición de la actividad.
+:::
 
 También puedes dejar que la sincronización ocurra sola activando el **auto-sincronizado** (ver 1.4): al cabo de las horas configuradas tras cada sesión, la tarea programada del servidor sincroniza la actividad (con reintentos acotados si hay fallos temporales).
 
@@ -195,12 +236,14 @@ Estas son las causas habituales de que una grabación no aparezca (o de que una 
 | **Auto-sincronización desactivada** (`0` horas) o **intentos agotados** tras fallos repetidos | Sincroniza manualmente con el botón. |
 | **Otra sincronización está en curso** | Espera unos minutos e inténtalo de nuevo. |
 
-#### Cambiar el nombre de la sala después de sincronizar - SE RECOMIENDA NO HACER NUNCA -
+#### Cambiar el nombre de la sala después de sincronizar — no recomendado —
 
+::: aviso
 - **Renombrar la actividad en Moodle es seguro**: las grabaciones ya sincronizadas están ancladas por su carpeta de Drive (Filtro 2 de 3.2), así que no se pierden; las grabaciones futuras usarán el nuevo nombre, porque el evento de calendario se actualiza en Google y el código de la reunión no cambia. No hace falta hacer nada más.
 
   Sobre las carpetas de Drive: Google organiza las grabaciones en `Meet Recordings` con **una subcarpeta por título de reunión**. Al renombrar la actividad, nada se mueve: las grabaciones antiguas siguen en la subcarpeta vieja y las nuevas caerán, normalmente, en una **subcarpeta nueva** con el título nuevo. El plugin lo gestiona solo: cada grabación guarda su carpeta y todas las carpetas de las grabaciones de una actividad quedan asignadas a ella (puede tener varias), así que en la siguiente sincronización la carpeta nueva se añade a la videotutoría y todo se sigue mostrando junto.
 - **En cambio, cambiar la URL de la sala o el correo del organizador es bastante arriesgado**: la sincronización busca entonces un código de reunión distinto y/o en la cuenta de Drive de otra persona, las grabaciones anteriores dejan de aparecer en el resultado y el sistema las trata como desaparecidas → **las mueve a la papelera** (borrado suave, reversible). Si esto te ha pasado, **revierte el cambio** (URL y correo originales) y sincroniza de nuevo: las grabaciones se restauran automáticamente desde la papelera.
+:::
 
 ### 3.5 Gestionar las grabaciones (profesorado)
 
@@ -232,7 +275,9 @@ Gracias a eso, las sincronizaciones **nunca sobrescriben un título que personal
 - Si el título en Moodle era el **original auto-importado** (nunca lo personalizaste): el cambio se propaga y Moodle muestra el nuevo nombre de Drive.
 - Si habías **personalizado el título en Moodle**: Moodle conserva tu título; internamente solo se anota el nuevo nombre de Drive. Tu nombre siempre gana.
 
-> **Grabaciones antiguas**: las filas creadas antes de que existiera este mecanismo se protegen igual: en la primera sincronización tras la actualización, el sistema anota el nombre actual de Drive y conserva el título que hubiera en Moodle, por si ya lo habías personalizado.
+::: nota
+**Grabaciones antiguas**: las filas creadas antes de que existiera este mecanismo se protegen igual: en la primera sincronización tras la actualización, el sistema anota el nombre actual de Drive y conserva el título que hubiera en Moodle, por si ya lo habías personalizado.
+:::
 
 En resumen:
 
@@ -256,7 +301,9 @@ En la vista **«Papelera (N)»** verás cada elemento con su fecha de grabación
 - **Restaurar**: la grabación vuelve a la lista activa con todo lo que tenía. También se restaura sola si el archivo reaparece en Drive y sincronizas.
 - **Eliminar definitivamente**: es la **única acción irreversible**. Solo está disponible sobre grabaciones ya en la papelera y borra también su análisis IA y sus materiales adjuntos. La acción queda registrada en el registro de la actividad.
 
-> **Importante**: ni la papelera ni «eliminar definitivamente» tocan el archivo en Google Drive. El archivo de Drive solo desaparece si lo borras tú en Drive (y entonces la siguiente sincronización enviará la fila a la papelera). Al revés: si quieres quitar una grabación del aula, basta con «Eliminar» en Moodle; no hace falta tocar Drive.
+::: importante
+Ni la papelera ni «eliminar definitivamente» tocan el archivo en Google Drive. El archivo de Drive solo desaparece si lo borras tú en Drive (y entonces la siguiente sincronización enviará la fila a la papelera). Al revés: si quieres quitar una grabación del aula, basta con «Eliminar» en Moodle; no hace falta tocar Drive.
+:::
 
 ### 3.8 Acceso a las grabaciones en Drive
 
