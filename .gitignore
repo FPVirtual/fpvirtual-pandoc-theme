@@ -2,6 +2,9 @@
 # contains all sorts of unfinished changes
 private/
 
+# backup copies made by tools/fix-image-sizes.sh
+*.orig-fpvirtual
+
 # build folder
 dist/
 
