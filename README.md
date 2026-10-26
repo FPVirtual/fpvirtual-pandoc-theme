@@ -530,8 +530,16 @@ Variables YAML habituales:
 title: "Documentación FPVirtual"
 author: "FPVirtual"
 lang: es
+mainfont: Carlito   # tipografía corporativa (equivalente libre de Calibri)
+sansfont: Carlito
 ---
 ```
+
+> La fuente corporativa Carlito requiere `--pdf-engine=xelatex` (o `lualatex`).
+> Las TTF se distribuyen en `fpvirtual/fonts/` (licencia OFL): instálalas en el
+> sistema (`~/.local/share/fonts` + `fc-cache`) o monta esa carpeta en
+> `/usr/share/fonts/carlito` al usar la imagen Docker `pandoc/extra`, que no la
+> incluye. Ver el ejemplo completo en `examples/fpvirtual-completo/`.
 
 Para incorporar los cambios futuros del repositorio original:
 
