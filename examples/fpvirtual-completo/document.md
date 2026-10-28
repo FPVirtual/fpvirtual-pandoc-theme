@@ -54,45 +54,43 @@ fc-cache -f
 
 ## Sin instalar nada: Docker
 
-Si no quieres instalar pandoc ni LaTeX (varios GB), puedes usar la imagen
-[pandoc/extra](https://hub.docker.com/r/pandoc/extra), que ya incluye pandoc,
-TeX Live completo, fuentes y filtros. Únicamente necesitas Docker.
+Este repositorio incluye un `Dockerfile` que genera la imagen
+`fpvirtual-pandoc` con pandoc, LaTeX, la plantilla `fpvirtual` y los recursos
+corporativos (fuente Carlito, logo y fondo de portada), igual que Eisvogel
+recomienda `pandoc/extra` pero sin configuración adicional. Únicamente
+necesitas Docker. Construye la imagen una vez desde la raíz del repositorio:
 
-La idea es montar en el contenedor la carpeta que contiene tu Markdown, la
-plantilla (`fpvirtual.latex`) y los recursos corporativos (la carpeta
-`fpvirtual/` con el logo y el fondo). Colócalos junto a tu documento y lanza:
+``` bash
+docker build -t fpvirtual-pandoc .
+```
+
+Después, desde la carpeta que contiene tu Markdown:
 
 ``` bash
 docker run --rm \
        --volume "$(pwd):/data" \
-       --volume "$PWD/fpvirtual/fonts:/usr/share/fonts/carlito:ro" \
-       --env XDG_CACHE_HOME=/tmp/cache \
        --user "$(id -u):$(id -g)" \
-       pandoc/extra document.md -o document.pdf \
-       --template=fpvirtual.latex \
+       fpvirtual-pandoc document.md -o document.pdf \
+       --template=fpvirtual \
        --pdf-engine=xelatex \
        --toc --syntax-highlighting idiomatic
 ```
 
 - `--volume "$(pwd):/data"` hace visible tu carpeta dentro del contenedor.
-- El segundo `--volume` instala la fuente corporativa Carlito en el contenedor
-  (la imagen no la incluye); así el PDF usa la misma tipografía que en local.
-- `--env XDG_CACHE_HOME=/tmp/cache` evita los avisos de caché de fontconfig
-  al ejecutar con un usuario sin directorio personal.
 - `--user "$(id -u):$(id -g)"` evita que el PDF generado pertenezca a `root`.
-- La primera ejecución descarga la imagen (~1 GB); las siguientes van rápido.
+- La imagen ya incluye la fuente Carlito y el logo/fondo corporativos, así que
+  no hace falta montar nada más.
+- La primera ejecución construye la imagen (~1 GB); las siguientes van rápido.
 
 Para compilar este mismo ejemplo dentro del repositorio, sin copiar nada:
 
 ``` bash
 docker run --rm \
        --volume "$PWD:/repo" \
-       --volume "$PWD/fpvirtual/fonts:/usr/share/fonts/carlito:ro" \
-       --env XDG_CACHE_HOME=/tmp/cache \
        --workdir /repo/examples/fpvirtual-completo \
        --user "$(id -u):$(id -g)" \
-       pandoc/extra document.md -o document.pdf \
-       --template=/repo/fpvirtual.latex \
+       fpvirtual-pandoc document.md -o document.pdf \
+       --template=fpvirtual \
        --pdf-engine=xelatex \
        --toc --syntax-highlighting idiomatic
 ```
@@ -102,13 +100,13 @@ docker run --rm \
 Si lo usas a menudo, define un alias en tu `~/.bashrc` o `~/.zshrc`:
 
 ``` bash
-alias pandock='docker run --rm -v "$(pwd):/data" -u "$(id -u):$(id -g)" pandoc/extra'
+alias pandock='docker run --rm -v "$(pwd):/data" -u "$(id -u):$(id -g)" fpvirtual-pandoc'
 ```
 
 y la conversión queda reducida a:
 
 ``` bash
-pandock document.md -o document.pdf --template=fpvirtual.latex \
+pandock document.md -o document.pdf --template=fpvirtual \
   --pdf-engine=xelatex --toc --syntax-highlighting idiomatic
 ```
 

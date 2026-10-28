@@ -76,6 +76,10 @@ pandock example.md -o example.pdf --template eisvogel --syntax-highlighting idio
 
 [pandoc/extra]: https://hub.docker.com/r/pandoc/extra
 
+> [!NOTE]
+> Este fork incluye su propia imagen Docker con la plantilla FPVirtual
+> precargada. Ver [Uso con Docker](#uso-con-docker-sin-instalar-nada).
+
 ## Usage
 
 1.  Open the terminal and navigate to the folder where your markdown file is located.
@@ -537,9 +541,62 @@ sansfont: Carlito
 
 > La fuente corporativa Carlito requiere `--pdf-engine=xelatex` (o `lualatex`).
 > Las TTF se distribuyen en `fpvirtual/fonts/` (licencia OFL): instálalas en el
-> sistema (`~/.local/share/fonts` + `fc-cache`) o monta esa carpeta en
-> `/usr/share/fonts/carlito` al usar la imagen Docker `pandoc/extra`, que no la
-> incluye. Ver el ejemplo completo en `examples/fpvirtual-completo/`.
+> sistema (`~/.local/share/fonts` + `fc-cache`) o usa la imagen Docker de este
+> repositorio, que ya la incluye. Ver el ejemplo completo en
+> `examples/fpvirtual-completo/`.
+
+## Uso con Docker (sin instalar nada)
+
+Igual que Eisvogel recomienda `pandoc/extra`, este fork incluye un `Dockerfile`
+que genera una imagen con pandoc, LaTeX, la plantilla `fpvirtual` y los
+recursos corporativos (tipografía Carlito, logo y fondo de portada), de modo
+que no hace falta instalar nada en el equipo.
+
+Construir la imagen (una sola vez, desde la raíz del repositorio):
+
+```shell
+docker build -t fpvirtual-pandoc .
+```
+
+Generar un PDF desde la carpeta donde está tu documento:
+
+```shell
+docker run --rm \
+  --volume "$(pwd):/data" \
+  --user $(id -u):$(id -g) \
+  fpvirtual-pandoc documento.md -o documento.pdf \
+  --template=fpvirtual --pdf-engine=xelatex --toc
+```
+
+Para uso frecuente se puede definir un alias:
+
+```shell
+alias pandoc-fpv='docker run --rm -v "$(pwd):/data" -u $(id -u):$(id -g) fpvirtual-pandoc'
+pandoc-fpv documento.md -o documento.pdf --template=fpvirtual --pdf-engine=xelatex --toc
+```
+
+El directorio actual se monta en `/data` dentro del contenedor, por lo que
+las rutas de imágenes del documento son relativas a esa carpeta. La plantilla
+ya incluye el logo (`fpvirtual/logo-cdfp.png`) y el fondo
+(`fpvirtual/portada-fondo.png`) por defecto; solo necesitas fijar
+`titlepage-logo` o `page-background` en el YAML si quieres usar otros.
+
+Variables YAML habituales:
+
+```yaml
+---
+title: "Documentación FPVirtual"
+author: "FPVirtual"
+lang: es
+mainfont: Carlito   # ya instalada en la imagen
+sansfont: Carlito
+---
+```
+
+> La imagen se construye sobre `pandoc/extra:3.9.0.2-alpine`, la misma base
+> que usa la documentación de Eisvogel para Docker (es la variante alpine
+> más reciente publicada; a partir de pandoc 3.10 `pandoc/extra` solo se
+> publica en variantes debian/ubuntu).
 
 Para incorporar los cambios futuros del repositorio original:
 

@@ -236,14 +236,17 @@ Estas son las causas habituales de que una grabación no aparezca (o de que una 
 | **Auto-sincronización desactivada** (`0` horas) o **intentos agotados** tras fallos repetidos | Sincroniza manualmente con el botón. |
 | **Otra sincronización está en curso** | Espera unos minutos e inténtalo de nuevo. |
 
-#### Cambiar el nombre de la sala después de sincronizar — no recomendado —
+#### Cambiar el nombre de la sala después de sincronizar 
 
 ::: aviso
+Lo que se va a explicar aquí es una explicación de como trabaja el plugin, pero recordamos que **no recomendado está recomendado el cambiar el nombre de la sala después de sincronizar**
+:::
+
 - **Renombrar la actividad en Moodle es seguro**: las grabaciones ya sincronizadas están ancladas por su carpeta de Drive (Filtro 2 de 3.2), así que no se pierden; las grabaciones futuras usarán el nuevo nombre, porque el evento de calendario se actualiza en Google y el código de la reunión no cambia. No hace falta hacer nada más.
 
   Sobre las carpetas de Drive: Google organiza las grabaciones en `Meet Recordings` con **una subcarpeta por título de reunión**. Al renombrar la actividad, nada se mueve: las grabaciones antiguas siguen en la subcarpeta vieja y las nuevas caerán, normalmente, en una **subcarpeta nueva** con el título nuevo. El plugin lo gestiona solo: cada grabación guarda su carpeta y todas las carpetas de las grabaciones de una actividad quedan asignadas a ella (puede tener varias), así que en la siguiente sincronización la carpeta nueva se añade a la videotutoría y todo se sigue mostrando junto.
 - **En cambio, cambiar la URL de la sala o el correo del organizador es bastante arriesgado**: la sincronización busca entonces un código de reunión distinto y/o en la cuenta de Drive de otra persona, las grabaciones anteriores dejan de aparecer en el resultado y el sistema las trata como desaparecidas → **las mueve a la papelera** (borrado suave, reversible). Si esto te ha pasado, **revierte el cambio** (URL y correo originales) y sincroniza de nuevo: las grabaciones se restauran automáticamente desde la papelera.
-:::
+
 
 ### 3.5 Gestionar las grabaciones (profesorado)
 

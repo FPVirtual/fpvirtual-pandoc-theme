@@ -5,7 +5,10 @@ $if(titlepage)$
 % uppercase title and orange subtitle. Positions measured from the dotx.
 %
 % Must be issued at top level: the background package's \NoBgThispage
-% does a local \let that would be undone by the titlepage group.
+% does a local \let that would be undone by the titlepage group. When no
+% page background is configured the background package is not loaded, so
+% the command is defined as a no-op.
+\providecommand{\NoBgThispage}{}
 \NoBgThispage
 \begin{titlepage}
 \thispagestyle{empty}

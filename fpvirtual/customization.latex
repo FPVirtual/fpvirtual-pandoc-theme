@@ -29,9 +29,14 @@
 \expandafter\def\csname scr@tso@default@entryformat\endcsname{\color{fpv-darkgray}}
 \makeatother
 % Scale images that are wider than the text block down to \linewidth,
-% preserving aspect ratio (images smaller than \linewidth stay at native size)
+% preserving aspect ratio (images smaller than \linewidth stay at native
+% size). pandoc loads graphicx only when the document has images or a
+% titlepage logo (and the FPVirtual cover loads tikz, which pulls graphicx),
+% so guard the Gin setup for documents with no graphics at all.
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\@ifpackageloaded{graphicx}{%
+  \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}%
+  \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}%
+  \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}%
+}{}
 \makeatother
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
