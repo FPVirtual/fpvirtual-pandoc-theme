@@ -545,6 +545,93 @@ sansfont: Carlito
 > repositorio, que ya la incluye. Ver el ejemplo completo en
 > `examples/fpvirtual-completo/`.
 
+### Scripts de construcción
+
+El repositorio incluye dos scripts en la raíz para trabajar con la plantilla y
+la documentación de usuario:
+
+- **`./build-fpvirtual.sh`** — Genera `fpvirtual.latex` a partir de las fuentes
+  multi-archivo (`template-multi-file/`) aplicando la personalización
+  corporativa: colores de marca, tipografía Helvetica, cabeceras y pies sin
+  valores por defecto, márgenes según la plantilla `.dotx`, portada
+  FPVirtual (`fpvirtual/portada.latex`, usa TikZ), línea de licencia tras el
+  resumen, índice en página nueva y los ajustes de `fpvirtual/customization.latex`.
+
+- **`./build-guia.sh`** — Regenera `docs/guia-de-usuario.pdf` a partir de
+  `docs/pre/guia-de-usuario.md`. Reconstruye la plantilla automáticamente
+  cuando las fuentes son más recientes que `fpvirtual.latex` y aplica el
+  filtro `pandoc-latex-environment` para las cajas de contenido (ver más
+  abajo). Tras compilar, ajusta automáticamente el tamaño de las imágenes
+  que sobresalen (ver siguiente apartado).
+
+### Ajuste automático de imágenes
+
+`build-guia.sh` delega en **`tools/fix-image-sizes.sh`**, que detecta páginas
+donde una imagen grande ha saltado a la página siguiente dejando más de un
+porcentaje de espacio libre, y reduce el ancho de esa imagen en el Markdown
+(actualizando el atributo `{width=NN%}` de pandoc) hasta que encaja. Los
+cambios se guardan en el Markdown y se crea una copia de seguridad
+`docs/pre/guia-de-usuario.md.orig-fpvirtual` la primera vez.
+
+Opciones:
+
+| Opción | Valor por defecto | Descripción |
+| --- | --- | --- |
+| `-m`, `--md FILE` | `docs/pre/guia-de-usuario.md` | Fuente Markdown |
+| `-p`, `--pdf FILE` | `docs/guia-de-usuario.pdf` | PDF de salida |
+| `-b`, `--build CMD` | `./build-guia.sh` | Comando de compilación entre iteraciones |
+| `-t`, `--threshold N` | `50` | Porcentaje de espacio libre que dispara el ajuste |
+| `--factor F` | `0.85` | Multiplicador de ancho por iteración |
+| `--min-width N` | `40` | Ancho mínimo (%), nunca se reduce por debajo |
+| `--max-iter N` | `12` | Máximo de iteraciones de ajuste/recompilación |
+
+Para compilar sin este ajuste (por ejemplo, para no modificar el Markdown):
+
+```shell
+FPV_NO_FIX=1 ./build-guia.sh
+```
+
+Requisitos del analizador: `python3`, `pdfinfo`, `pdftotext` y `pdftohtml`
+(paquete `poppler-utils` en Debian/Ubuntu).
+
+### Cajas de contenido (nota, aviso, importante)
+
+La guía de usuario usa cajas de tipo *tcolorbox* para destacar contenido. Se
+definen en el propio documento, en `header-includes` del YAML, y se activan
+con el filtro [pandoc-latex-environment] mediante divs con clase:
+
+```markdown
+::: nota
+Texto de la caja.
+:::
+
+::: aviso
+Texto de la caja.
+:::
+
+::: importante
+Texto de la caja.
+:::
+```
+
+El mapeo clase → entorno LaTeX se declara en el YAML:
+
+```yaml
+pandoc-latex-environment:
+  nota: [nota]
+  aviso: [aviso]
+  importante: [importante]
+```
+
+y la compilación requiere el filtro (`build-guia.sh` ya lo incluye):
+
+```shell
+pandoc documento.md -o documento.pdf --template=fpvirtual.latex \
+  --filter pandoc-latex-environment --toc
+```
+
+[pandoc-latex-environment]: https://github.com/chdemko/pandoc-latex-environment
+
 ## Uso con Docker (sin instalar nada)
 
 Igual que Eisvogel recomienda `pandoc/extra`, este fork incluye un `Dockerfile`
