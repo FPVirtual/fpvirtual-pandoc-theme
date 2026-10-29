@@ -962,7 +962,7 @@ $if(titlepage)$
   \fill[fpv-orange] ([xshift=10.67mm, yshift=-58.92mm]current page.north west) circle (1.65mm);
   \node[anchor=north west] at ([xshift=72.8mm, yshift=-65.2mm]current page.north west)
     {\includegraphics[width=40.6mm]{$if(titlepage-logo)$$titlepage-logo$$else$fpvirtual/logo-cdfp.png$endif$}};
-  \node[anchor=north west, align=left, text=fpv-darkgray,
+  \node[anchor=north west, align=left, text=fpv-darkgray, text width=130mm,
         font=\fontsize{40}{46}\selectfont\bfseries\sffamily]
     at ([xshift=53mm, yshift=-135mm]current page.north west)
     {\MakeUppercase{$title$}};
